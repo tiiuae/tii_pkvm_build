@@ -35,6 +35,10 @@ fi
 # shellcheck disable=SC2086
 exec ${CONTAINER_ENGINE} run --rm ${INTERACTIVE} \
   ${CONTAINER_ENV_FLAGS} \
+  -e XDG_RUNTIME_DIR=/tmp \
+  -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+  -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY  \
+  --user=$(id -u):$(id -g) \
   -v "${DIR}:/workspace:z" \
   ${YOCTO_SOURCE_MIRROR_DIR:+--env YOCTO_SOURCE_MIRROR_DIR=/workspace/downloads} \
   ${YOCTO_SOURCE_MIRROR_DIR:+-v "${YOCTO_SOURCE_MIRROR_DIR}":/workspace/downloads:z} \
@@ -42,5 +46,6 @@ exec ${CONTAINER_ENGINE} run --rm ${INTERACTIVE} \
   ${GIT_MIRROR_DIR:+-v "${GIT_MIRROR_DIR}":/workspace/git:z} \
   -v "${HOME}/.ssh:/home/build/.ssh:z" \
   -v "${HOME}/.gitconfig:/home/build/.gitconfig:z" \
+  --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun \
   ${CONTAINER_ENGINE_OPTS} \
   "${CONTAINER_REGISTRY_PREFIX}tiiuae/pkvm_build:latest" ${CMD}

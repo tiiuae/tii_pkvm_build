@@ -39,6 +39,25 @@ RUN \
         gcc-aarch64-linux-gnu \
         g++-aarch64-linux-gnu
 
+RUN \
+    apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y install \
+        lz4 \
+        zstd \
+        file \
+        sudo \
+        iproute2 \
+        iptables
+
+RUN \
+    apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y install \
+        vim \
+        less \
+        strace
+
 RUN useradd -m -d /home/build -s /bin/bash -G sudo -u 1000 build
 RUN echo 'build:build' | chpasswd
 RUN printf '\n\n\
