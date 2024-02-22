@@ -1,0 +1,2 @@
+MACHINE=jetson-agx-orin-devkit
+LAYERS="meta-tegra"
